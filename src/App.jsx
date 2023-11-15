@@ -1,29 +1,26 @@
-import { useState } from "react"
-import confetti from "canvas-confetti"
-import { Square } from "./component/Square"
-import { TURNS, WINNER_COMBOS } from "./constants" 
+import { useState } from 'react'
+import confetti from 'canvas-confetti'
+import { Square } from './component/Square'
+import { TURNS, WINNER_COMBOS } from './constants'
 
-
-function App() {
-
+function App () {
   const [board, setBoard] = useState(Array(9).fill(null))
-  
+
   const [turn, setTurn] = useState(TURNS.X)
 
   const [winner, setWinner] = useState(null)
 
   const checkWinner = (boardToCheck) => {
-
     for (const combo of WINNER_COMBOS) {
-      const [a, b, c,] = combo;
+      const [a, b, c] = combo
       if (
         boardToCheck[a] &&
         boardToCheck[a] === boardToCheck[b] &&
         boardToCheck[a] === boardToCheck[c]
-      
+
       ) {
         return boardToCheck[a]
-       }
+      }
     }
     return null
   }
@@ -32,14 +29,13 @@ function App() {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
- }
-  const checkEndgame = (newBoard) =>
-  {
+  }
+  const checkEndgame = (newBoard) => {
     return newBoard.every((square) => square != null)
-   }
+  }
   const updateBoard = (index) => {
     const newBoard = [...board]
-    
+
     newBoard[index] = turn
     if (board[index] || winner) return
     setBoard(newBoard)
@@ -48,18 +44,14 @@ function App() {
 
     setTurn(newTurn)
 
-    const newWinner = checkWinner(newBoard) 
+    const newWinner = checkWinner(newBoard)
     if (newWinner) {
       confetti()
       setWinner(newWinner)
     } else if (checkEndgame(newBoard)) {
       setWinner(false)
-
     }
-    
-    
   }
-
 
   return (
   <main className='board'>
@@ -78,7 +70,7 @@ function App() {
             )
           })
         }
-    
+
       </section>
       <section className="turn">
         <Square isSelected={turn === TURNS.X} >{TURNS.X}</Square>
@@ -95,12 +87,12 @@ function App() {
                   : 'Ganó:'
               }
             </h2>
-            
+
             <header className='win'>
               {winner && <Square>{winner}</Square>}
             </header>
 
-            <footer> 
+            <footer>
               <button onClick={resetGame}>Play again</button>
             </footer>
 
@@ -112,8 +104,5 @@ function App() {
   </main>
   )
 }
-
-
-
 
 export default App
